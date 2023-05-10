@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!-- https://github.com/iancoleman/bip39/tree/7da8c22eaf12fb50e75d5987e5304e4212ff31a2 was original source of Ian Coleman's BIP39 - Mnemonic Code 
+      updated 7da8c22 on Feb 10, 2021 -->
+<!-- https://github.com/xcubicle/memorypaperwallet was original source of memorypaperwallet-master.zip
+      updated 119825a on Aug 14, 2022 -->	
+<!--https://github.com/knaccc/subaddress-js Monero Subaddress javascript utility	89d9a6e  on Feb 7, 2019 
+    brought into node.js  browserify --standalone mn_subaddress  bundled into mnsubaddress.js -->
 <html>
     <head lang="en">
         <meta charset="utf-8" />
@@ -179,6 +185,14 @@
                                         <label class="col-sm-3 control-label"><span class="more-info" title="Total bits of entropy may be less than indicated if any entropy event uses a weak source.">Total Bits</span></label>
                                         <div class="bits col-sm-3 form-control-static"></div>
                                     </div>
+                                    <label class="col-sm-3 control-label">Monero Base Address</label>
+                                    <div class="xmrpublic private-data col-sm-9 form-control-static"></div>
+                                    <label class="col-sm-3 control-label">Monero Private</label>
+                                    <div class="xmrprivate private-data col-sm-9 form-control-static"></div>
+                                    <label class="col-sm-3 control-label">Monero Private View</label>
+                                    <div class="xmrprivateview private-data col-sm-9 form-control-static"></div>
+                                    <label class="col-sm-3 control-label">Monero Public View</label>
+                                    <div class="xmrpublicview private-data col-sm-9 form-control-static"></div>
                                     <label class="col-sm-3 control-label">Filtered Entropy</label>
                                     <div class="filtered private-data col-sm-9 form-control-static"></div>
                                     <label class="col-sm-3 control-label">Raw Binary</label>
@@ -1220,7 +1234,7 @@
   <script src="src/js/lib/secrets.js"></script>
   <script src="src/js/lib/ecdsa.js"></script>
   <script src="src/js/lib/solanaweb3.js"></script>
-  <script src="src/js/main.js"></script>
+  <!-- script src="src/js/main.js"></script 2023-05-09 ERG removed -->
         <script src="js/jquery-3.2.1.js"></script>
         <script src="js/bootstrap.js"></script>
         <!-- <script src="js/bip39-libs.js"></script> WAG230304 removed -->
@@ -1235,6 +1249,7 @@
         <script src="js/fio-util.js"></script>
         <script src="js/xwc-util.js"></script>
         <script src="js/sjcl-bip39.js"></script>
+		<script src="js/mnsubaddress.js"></script> <!--WAG230427 added after Browserify with --standalone option -->
         <script src="js/wordlist_english.js"></script>
         <script src="js/wordlist_japanese.js"></script>
         <script src="js/wordlist_spanish.js"></script>
