@@ -1,5 +1,5 @@
 function generate(params, callback) {
-  console.log(params);
+  /* ERG console.log(params);*/
   if(typeof params != 'object') throw new Error('Invalid Inputs');
   var passphrase = params.privateKey || document.getElementById('xprime').value;
   var salt = document.getElementById('salt').value;
@@ -14814,9 +14814,9 @@ function keyToBitcoinish(key, version) {
   /**/
   if (version == 0/*bitcoin*/) {
     var keyBytesString = toHexString(key);
-    console.log('1. keyToBitcoinish key',keyBytesString);
+    /* ERG console.log('1. keyToBitcoinish key',keyBytesString);
     console.log('2. keyToBitcoinish private',b58checkencode(version + 0x80, key));
-    console.log('3. keyToBitcoinish public',b58checkencode(version, ripemd160(sha256(pubkey))));
+    console.log('3. keyToBitcoinish public',b58checkencode(version, ripemd160(sha256(pubkey))));*/
   }
   /**/
   return {
@@ -14839,9 +14839,9 @@ function keyToSegwit(key) {
   var scriptHashKey = encode(hash160(pubKey));
   /**/
   var keyBytesString = toHexString(key);
-  console.log('1. keyToSegwit key',keyBytesString);
+  /* ERG console.log('1. keyToSegwit key',keyBytesString);
   console.log('2. keyToSegwit private',b58checkencode(0 + 0x80, key, true));
-  console.log('3. keyToSegwit public',bech32Encode(scriptHashKey));
+  console.log('3. keyToSegwit public',bech32Encode(scriptHashKey));*/
   /**/
   return {
     private: b58checkencode(0 + 0x80, key, true),
@@ -16361,19 +16361,36 @@ var mn_words = {
     }
 })();
 
+function intToLittleEndianUint32Hex(value) { //WAG230412 bring in intToLittleEndianUint32Hex(value) from node_modules\subaddress
+  let h = value.toString(16);
+  if(h.length>8) throw 'value must not equal or exceed 2^32';
+  while(h.length<8) h = '0' + h;
+  return h.match(/../g).reverse().join('');
+}
+
+function asciiToHex(str) {  //WAG230412 bring in asciiToHex(str) from node_modules\subaddress
+  var a = [];
+  for (var n = 0, l = str.length; n < l; n ++) {
+    var hex = Number(str.charCodeAt(n)).toString(16);
+    if(hex.length==1) hex = '0' + hex;
+    a.push(hex);
+  }
+  return a.join('');
+}
+
 function keyToMonero(seed) {
-  console.log('keyToMonero seed',seed);//WAG230210 uncomment
+  console.log('memWallet keyToMonero seed',seed);//WAG230210 uncomment
   var seedBytesString = toHexString(seed);
-  console.log('toString',seedBytesString);//WAG230210 uncomment
+  console.log('memWallet toString',seedBytesString);//WAG230210 uncomment
   var mnemonic = mn_encode(seedBytesString,'english');
-  console.log('XMR Private Mnemonic seed:',mnemonic);
+  console.log('memWallet XMR Private Mnemonic seed:',mnemonic);
 
   var private_spend = reduce32(seed);
-  console.log('private_spend',private_spend);//WAG230322
+  console.log('memWallet private_spend',private_spend);//WAG230322
   var seedReducedHexString = toHexString(private_spend);//WAG230322
-  console.log('seedReducedHexString',seedReducedHexString);//WAG230322
+  console.log('memWallet seedReducedHexString',seedReducedHexString);//WAG230322
   var reducedMnemonic = mn_encode(seedReducedHexString,'english');//WAG230322
-  console.log('XMR Private Mnemonic seed:',reducedMnemonic);//WAG230322
+  console.log('memWallet XMR Private Mnemonic seed:',reducedMnemonic);//WAG230322
   
   var private_view = reduce32(keccak256(private_spend));
 
@@ -16387,7 +16404,11 @@ function keyToMonero(seed) {
 
 
   var address_buf = Buffer.concat([Buffer.alloc(1, 0x12), public_spend, public_view])
+  console.log('address_buf',address_buf.toString('hex' ));//WAG230414
+  var keccakOfBuf = keccak256(address_buf);//WAG230414
+  console.log('keccakOfBuf',keccakOfBuf.toString('hex' ));//WAG230414
   address_buf = Buffer.concat([address_buf, keccak256(address_buf).slice(0,4)]);
+  console.log('address_buf',address_buf.toString('hex' ));//WAG230414
   var address = ''
   for (var i = 0; i < 8; i++) {
     xx = bs58.encode(address_buf.slice(i*8, i*8+8))
@@ -16397,6 +16418,28 @@ function keyToMonero(seed) {
     address += xx;
   }
   address += bs58.encode(address_buf.slice(64, 69));
+
+  console.log('Monero Bass Address base58',address);//WAG230407
+  console.log('Monero Public Spend',public_spend.toString('hex'));//WAG230410
+  console.log('Monero Private Spend Key', private_spend.toString('hex' ));//WAG230407
+  console.log('Monero Private View', private_view.toString('hex') );//WAG230407
+  console.log('Monero Public View', public_view.toString('hex') );//WAG230407
+  
+  const SUBADDR_HEX = asciiToHex('SubAddr') + '00';//WAG230412
+  const accountIndex = 0;//WAG230412
+  const subaddressIndex = 2;//WAG230412
+  let data = SUBADDR_HEX + private_view.toString('hex') + intToLittleEndianUint32Hex(accountIndex) + intToLittleEndianUint32Hex(subaddressIndex);//WAG230412
+  console.log('getSubaddressPSKPoint data',data);//WAG230412  This matches data from node.js 
+  //WAG230414 var keccakOfData = keccak256(data);//WAG230414 This didn't work
+  var keccakOfData = keccak('keccak256').update(Buffer.from(data, 'hex')).digest('hex');//WAG230414  but this did?? my Brain Hurts
+  console.log('keccakOfData',keccakOfData.toString('hex'));//WAG230414
+
+
+let publicSpendKeyHex = "64fdf128dde29b33dd695b6e333ab4be9283bd354243623eccabc19f655e9473";//Is BullwinkleMooseRocky
+let privateViewKeyHex = "2f3c148061dcf63f9ff0c93b1bbf8dbc412a4c70c3163a40fafb91ce9c7cb107";//Is BullwinkleMooseRocky
+
+let addr2 = mn_subaddress.getSubaddress(privateViewKeyHex, publicSpendKeyHex, 0, 2);
+console.log('MoneroAcct0Index2',addr2);
 
   return {
     private_spend: private_spend.toString('hex'),
