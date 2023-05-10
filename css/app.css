@@ -46,6 +46,10 @@ body {
 .monospace {
     font-family: monospace;
 }
+.entropy-container .xmrpublic,
+.entropy-container .xmrprivate,
+.entropy-container .xmrprivateview,
+.entropy-container .xmrpublicview,
 .entropy-container .filtered,
 .entropy-container .binary {
     word-wrap: break-word;
