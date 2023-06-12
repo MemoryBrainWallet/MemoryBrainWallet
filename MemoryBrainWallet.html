@@ -2,7 +2,7 @@
 <!-- https://github.com/iancoleman/bip39/tree/7da8c22eaf12fb50e75d5987e5304e4212ff31a2 was original source of Ian Coleman's BIP39 - Mnemonic Code 
       updated 7da8c22 on Feb 10, 2021 -->
 <!-- https://github.com/xcubicle/memorypaperwallet was original source of memorypaperwallet-master.zip
-      updated 119825a on Aug 14, 2022 -->	
+      updated 119825a on Aug 14, 2022 Thanks xCubicle Blockchain labs https://xcubicle.com -->	
 <!--https://github.com/knaccc/subaddress-js Monero Subaddress javascript utility	89d9a6e  on Feb 7, 2019 
     brought into node.js  browserify --standalone mn_subaddress  bundled into mnsubaddress.js -->
 <html>
@@ -68,8 +68,7 @@
 
     <div id="login-box">
       <h1>Memory Brain Wallet</h1>
-      <p>A Cryptocurrency Brain + Paper Wallet Generator<br /> Bitcoin, Litecoin, Ethereum, Solana, Monero, Oxen, EOS and
-        Ardor</p>
+      <p>A Bitcoin and Monero Brain + Paper Wallet Generator<br /> </p>
       <form class="x-login">
         <fieldset class="x-email">
           <input id="xprime" class="form-control" placeholder="Passphrase over 30 characters" autocomplete="off" oninput="updateButton()">
@@ -101,8 +100,7 @@
           </span>
         </div><!-- #lvl-wrap -->
       </form>
-      <p>Made with &hearts; in NYC by <a href="https://xcubicle.com" style="color:red">xCubicle Blockchain Labs</a></p>
-    </div><!-- #login-box -->
+     </div><!-- #login-box -->
 
             <h1 class="text-center">Mnemonic Code Converter</h1>
             <p class="version">v0.5.4</p>
@@ -482,15 +480,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group litecoin-ltub-container hidden">
-                            <label for="litecoin-use-ltub" class="col-sm-2 control-label">Prefixes</label>
-                            <div class="col-sm-10 checkbox">
-                                <label>
-                                    <input type="checkbox" id="litecoin-use-ltub" class="litecoin-use-ltub" checked="checked">
-                                    Use <code>Ltpv / Ltub</code> instead of <code>xprv / xpub</code>
-                                </label>
-                            </div>
-                        </div>
                     </form>
                 </div>
             </div>
