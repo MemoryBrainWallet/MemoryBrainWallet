@@ -31,6 +31,10 @@ body {
 .phrase {
     word-break: keep-all;
 }
+/* WAG 230619 try adding phraseM */
+.phraseM {
+    word-break: keep-all;
+}
 .generate-container .strength {
     /* override mobile width from bootstrap */
     width: auto!important;
