@@ -16382,15 +16382,16 @@ function keyToMonero(seed) {
   console.log('memWallet keyToMonero seed',seed);//WAG230210 uncomment
   var seedBytesString = toHexString(seed);
   console.log('memWallet toString',seedBytesString);//WAG230210 uncomment
-  var mnemonic = mn_encode(seedBytesString,'english');
-  console.log('memWallet XMR Private Mnemonic seed:',mnemonic);
+  //MBW 230623 too early, must be reduced first var mnemonic = mn_encode(seedBytesString,'english');
+  //MBW 230623 too early, must be reduced first console.log('memWallet XMR Private Mnemonic seed:',mnemonic);
 
   var private_spend = reduce32(seed);
   console.log('memWallet private_spend',private_spend);//WAG230322
   var seedReducedHexString = toHexString(private_spend);//WAG230322
-  console.log('memWallet seedReducedHexString',seedReducedHexString);//WAG230322
+  //MBW 230623 console.log('memWallet seedReducedHexString',seedReducedHexString);//WAG230322
   var reducedMnemonic = mn_encode(seedReducedHexString,'english');//WAG230322
-  console.log('memWallet XMR Private Mnemonic seed:',reducedMnemonic);//WAG230322
+  //MBW 230623  console.log('memWallet XMR Private Mnemonic seed:',reducedMnemonic);//WAG230322
+  //MBW230622 This didn't work DOM.phraseM.val(reducedMnemonic);
   
   var private_view = reduce32(keccak256(private_spend));
 
@@ -16424,6 +16425,7 @@ function keyToMonero(seed) {
   console.log('Monero Private Spend Key', private_spend.toString('hex' ));//WAG230407
   console.log('Monero Private View', private_view.toString('hex') );//WAG230407
   console.log('Monero Public View', public_view.toString('hex') );//WAG230407
+  console.log('Monero Mnemonic', reducedMnemonic);//MBW230623
   
   const SUBADDR_HEX = asciiToHex('SubAddr') + '00';//WAG230412
   const accountIndex = 0;//WAG230412
@@ -16446,6 +16448,7 @@ console.log('MoneroAcct0Index2',addr2);
     private_view: private_view.toString('hex'),
     public_spend: public_spend.toString('hex'),
     public_view: public_view.toString('hex'),
+	reducedMnemonic: reducedMnemonic,
     public: address
   }
 }
