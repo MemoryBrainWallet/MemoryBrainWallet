@@ -5,6 +5,7 @@
   let myxmrprivatekey = "sdf";
   let myxmrprivateview = "ghj";
   let myxmrpublicview = "kgf";
+  let phraseM = "bob";//MBW230626
   
   let GLOBAL_SHARE_COUNTER = 0;
   const SUPPORTED_ALT_COINS = ['litecoin', 'ethereum', 'segwit', 'oxen', 'monero', 'solana'];
@@ -416,11 +417,13 @@
 
     for(let i = 0; i < Object.keys(coinKeys).length; i++) {
       const key = Object.keys(coinKeys)[i];
-      if((coinKeys[key] !== addresses[key].length) && (coin != 'sol')) {
+      if((coinKeys[key] !== addresses[key].length) && (coin != 'sol') && (coin != 'xmr')) { //MBW230623  xmr reducedMnemonic has various lengths
         alert(`Please choose another username and password combination. Error: ${coin.toUpperCase()}`);
         window.location.reload(); 
         break;
       }
+	 if(coin == 'xmr')//MBW230626 
+		 phraseM = addresses.reducedMnemonic;//MBW230626 
     }
   }
 
@@ -433,7 +436,8 @@
       xmr: {
         public: 95,
         private_view: 64,
-        private_spend: 64
+        private_spend: 64,
+		reducedMnemonic: 256 //MBW230623 try this
       },
       oxen: {
         public: 95,
@@ -568,6 +572,7 @@
     DOM.entropyWeakEntropyOverrideWarning = DOM.entropyContainer.find(".weak-entropy-override-warning");
     DOM.entropyFilterWarning = DOM.entropyContainer.find(".filter-warning");
     DOM.phrase = $(".phrase");
+	DOM.phraseM = $(".phraseM"); /* MBW 230620  */ 
     DOM.autoCompute = $(".autoCompute");
     DOM.splitMnemonic = $(".splitMnemonic");
     DOM.showSplitMnemonic = $(".showSplitMnemonic");
@@ -2445,9 +2450,12 @@
             entropyArr.push(entropyByte)
         }
         // Convert entropy array to mnemonic
-        var phrase = mnemonic.toMnemonic(entropyArr);
+        /* MBW 230626 var phraseM = mnemonic.toMnemonic(entropyArr);  see if can get phraseM into DOM */
+		var phrase = mnemonic.toMnemonic(entropyArr);
 		/* ERG console.log('phrase',phrase);*/
         // Set the mnemonic in the UI
+		console.log ('phraseM', phraseM); //MBW230626 
+		DOM.phraseM.val(phraseM);
         DOM.phrase.val(phrase);
         writeSplitPhrase(phrase);
         // Show the word indexes
