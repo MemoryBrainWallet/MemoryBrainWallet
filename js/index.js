@@ -152,7 +152,7 @@
       var entropy = null;
       //// if (entropyTypeAutoDetect) {
           entropy = Entropy.fromString(entropyStr);
-		  /* ERG console.log('entropy',entropy);*/
+		  /* ALC console.log('entropy',entropy);*/
       //// }
       //// else {
       ////     let base = DOM.entropyTypeInputs.filter(":checked").val();
@@ -177,7 +177,7 @@
           }
           // Truncate hash to suit number of words
           mnemonicLength = parseInt(mnemonicLength);
-		  /* ERG console.log('mnemonicLength',mnemonicLength);*/
+		  /* ALC console.log('mnemonicLength',mnemonicLength);*/
           var numberOfBits = 32 * mnemonicLength / 3;
           bits = bits.substring(0, numberOfBits);
           // show warning for weak entropy override
@@ -208,7 +208,7 @@
       }
       // Convert entropy array to mnemonic
       var phrase = mnemonic.toMnemonic(entropyArr);
-	  /* ERG console.log('phrase',phrase);*/
+	  /* ALC console.log('phrase',phrase);*/
 
       // Set the mnemonic in the UI
       //// DOM.phrase.val(phrase);
@@ -233,7 +233,7 @@
     };
 
     generate(params, result => {
-	  /* ERG console.log('!!## main.js setResult entropy ... entropyChanged');*/
+	  /* ALC console.log('!!## main.js setResult entropy ... entropyChanged');*/
 	  setResult('#entropy', result.key);
 	  var x = '';
 
@@ -253,7 +253,7 @@
       makeQRImage(`qr-nxtacct`, address);
       makeQRImage(`qr-nxtpri`, passphrase);
       x = generateAltCoins(result.private, power);
-	  /* ERG console.log('MAIN Returned xmrpublickey');
+	  /* ALC console.log('MAIN Returned xmrpublickey');
 	  console.log(x);*/
 	  /*setResult('#xmrpublic', x); I DO NOT EXPECT THIS TO WORK */
       generateEOS(result.private);
@@ -278,7 +278,7 @@
         drawIdenticon(`.i-${alt}`, result.public);
 
         if (alt == 'oxen' || alt == 'xmr') {
-		  if (alt == 'xmr') { /* ERG console.log('XMR public',result.public); console.log(`#${alt}pub`);*/
+		  if (alt == 'xmr') { /* ALC console.log('XMR public',result.public); console.log(`#${alt}pub`);*/
 
           /*setResult(`#${alt}pub`, result.public);*/
           /*setResult('#xmrpublic', result.public);*/
@@ -287,12 +287,12 @@
 		  myxmrprivatekey = result.private_spend;
 		  myxmrprivateview = result.private_view;
 		  myxmrpublicview = result.public_view;
-		  /* ERG console.log('MAIN inside');
+		  /* ALC console.log('MAIN inside');
 		  console.log(xmrpublickey);*/
 		  /*setResult(`xmrpublic`, xmrpublickey); I DO NOT EXPECT THIS TO WORK */
 		  }
 
-		  /* ERG console.log('MAIN Was result set?');*/
+		  /* ALC console.log('MAIN Was result set?');*/
           // setResult(`#xmrpub-spend`, result.public_spend);
           setResult(`#${alt}pri-spend`, result.private_spend);
           // setResult(`#xmrpub-view`, result.public_view);
@@ -314,7 +314,7 @@
     $('#result').toggle();
     $('#login-box').toggle();
     $('.result-btn').toggle();
-	/* ERG console.log('Now returning xmrpublickey',xmrpublickey);*/
+	/* ALC console.log('Now returning xmrpublickey',xmrpublickey);*/
 	return xmrpublickey;
   }
 
@@ -517,7 +517,7 @@
   $(".upload button").click(function () {
     $(this).parent().parent().fadeOut(888);
   });
-/* 2023-05-10 ERG ... ABOVE CODE CAME FROM MAIN.JS */
+/* 2023-05-10 ALC ... ABOVE CODE CAME FROM MAIN.JS */
     // mnemonics is populated as required by getLanguage
     var mnemonics = { "english": new Mnemonic("english") };
     var mnemonic = mnemonics["english"];
@@ -592,9 +592,11 @@
     DOM.bip49tab = $("#bip49-tab");
     DOM.bip84tab = $("#bip84-tab");
     DOM.bip141tab = $("#bip141-tab");
+    DOM.bipmonerotab = $("#bipmonero-tab");/*ALC*/
     DOM.bip32panel = $("#bip32");
     DOM.bip44panel = $("#bip44");
     DOM.bip49panel = $("#bip49");
+    DOM.bipmoneropanel = $("#bipmonero");/*ALC*/
     DOM.bip32path = $("#bip32-path");
     DOM.bip44path = $("#bip44-path");
     DOM.bip44purpose = $("#bip44 .purpose");
@@ -603,6 +605,15 @@
     DOM.bip44accountXprv = $("#bip44 .account-xprv");
     DOM.bip44accountXpub = $("#bip44 .account-xpub");
     DOM.bip44change = $("#bip44 .change");
+	/*ALC*/
+    DOM.bipmoneropath = $("#bipmonero-path");
+    DOM.bipmoneropurpose = $("#bipmonero .purpose");
+    DOM.bipmonerocoin = $("#bipmonero .coin");
+    DOM.bipmoneroaccount = $("#bipmonero .account");
+    DOM.bipmoneroaccountXprv = $("#bipmonero .account-xprv");
+    DOM.bipmoneroaccountXpub = $("#bipmonero .account-xpub");
+    DOM.bipmonerochange = $("#bipmonero .change");
+	/*ALC*/
     DOM.bip49unavailable = $("#bip49 .unavailable");
     DOM.bip49available = $("#bip49 .available");
     DOM.bip49path = $("#bip49-path");
@@ -692,6 +703,8 @@
         DOM.bip49change.on("input", calcForDerivationPath);
         DOM.bip84account.on("input", calcForDerivationPath);
         DOM.bip84change.on("input", calcForDerivationPath);
+        DOM.bipmoneroaccount.on("input", calcForDerivationPath);/*ALC*/
+        DOM.bipmonerochange.on("input", calcForDerivationPath);/*ALC*/
         DOM.bip85application.on('input', calcBip85);
         DOM.bip85mnemonicLanguage.on('change', calcBip85);
         DOM.bip85mnemonicLength.on('change', calcBip85);
@@ -1108,6 +1121,7 @@
         showSegwitAvailable();
         // Get the derivation path
         var derivationPath = getDerivationPath();
+		/* ALC console.log('derivationPath', derivationPath); */
         var errorText = findDerivationPathErrors(derivationPath);
         if (errorText) {
             showValidationError(errorText);
@@ -1122,6 +1136,9 @@
         }
         else if (bip84TabSelected()) {
             displayBip84Info();
+        }
+        else if (bipMoneroTabSelected()) {
+            displayBipMoneroInfo();
         }
         displayBip32Info();
     }
@@ -1497,7 +1514,7 @@
             path += change;
             DOM.bip44path.val(path);
             var derivationPath = DOM.bip44path.val();
-            /* ERG console.log("Using derivation path from BIP44 tab: " + derivationPath);*/
+            /* ALC console.log("Using derivation path from BIP44 tab: " + derivationPath);*/
             return derivationPath;
         }
         else if (bip49TabSelected()) {
@@ -1512,7 +1529,7 @@
             path += change;
             DOM.bip49path.val(path);
             var derivationPath = DOM.bip49path.val();
-            /* ERG console.log("Using derivation path from BIP49 tab: " + derivationPath);*/
+            /* ALC console.log("Using derivation path from BIP49 tab: " + derivationPath);*/
             return derivationPath;
         }
         else if (bip84TabSelected()) {
@@ -1527,17 +1544,34 @@
             path += change;
             DOM.bip84path.val(path);
             var derivationPath = DOM.bip84path.val();
-            /* ERG console.log("Using derivation path from BIP84 tab: " + derivationPath);*/
+            /* ALC console.log("Using derivation path from BIP84 tab: " + derivationPath);*/
             return derivationPath;
         }
         else if (bip32TabSelected()) {
             var derivationPath = DOM.bip32path.val();
-            /* ERG console.log("Using derivation path from BIP32 tab: " + derivationPath);*/
+            /* ALC console.log("Using derivation path from BIP32 tab: " + derivationPath);*/
             return derivationPath;
+        }
+        else if (bipMoneroTabSelected()) {
+            var purpose = parseIntNoNaN(DOM.bipmoneropurpose.val(), 44);
+            var coin = parseIntNoNaN(DOM.bipmonerocoin.val(), 128);
+            var account = parseIntNoNaN(DOM.bipmoneroaccount.val(), 0);
+            var change = parseIntNoNaN(DOM.bipmonerochange.val(), 0);
+            var path = "m/";
+            path += purpose + "'/";
+            path += coin + "'/";
+            path += account + "'/";
+            path += change;
+            /* ALC console.log("path: " + path); This shows the correct path: m/44'/128'/0'/0 */
+            DOM.bipmoneropath.val(path); /* ALC but this jQuery call does not appear to work, don't know why */
+            var derivationPath = DOM.bipmoneropath.val(); /* ALC so then this value is 'undefined' */
+            /* ALC */console.log("Using derivation path from BIPMonero tab: " + path);
+            /* ALC return derivationPath; */
+            return path; /* ALC so simply returning this correct value here */
         }
         else if (bip141TabSelected()) {
             var derivationPath = DOM.bip141path.val();
-            /* ERG console.log("Using derivation path from BIP141 tab: " + derivationPath);*/
+            /* ALC console.log("Using derivation path from BIP141 tab: " + derivationPath);*/
             return derivationPath;
         }
         else {
@@ -1625,6 +1659,29 @@
         }
     }
 
+    function displayBipMoneroInfo() {
+        // Get the derivation path for the account
+        var purpose = parseIntNoNaN(DOM.bip44purpose.val(), 44);
+        var coin = parseIntNoNaN(DOM.bip44coin.val(), 128);
+        var account = parseIntNoNaN(DOM.bip44account.val(), 0);
+        var path = "m/";
+        path += purpose + "'/";
+        path += coin + "'/";
+        path += account + "'/";
+        // Calculate the account extended keys
+        var accountExtendedKey = calcBip32ExtendedKey(path);
+        var accountXprv = accountExtendedKey.toBase58();
+        var accountXpub = accountExtendedKey.neutered().toBase58();
+
+        // Display the extended keys
+        DOM.bip44accountXprv.val(accountXprv);
+        DOM.bip44accountXpub.val(accountXpub);
+
+        if (isELA()) {
+            displayBip44InfoForELA();
+        }
+    }
+
     function displayBip49Info() {
         // Get the derivation path for the account
         var purpose = parseIntNoNaN(DOM.bip49purpose.val(), 49);
@@ -1678,7 +1735,7 @@
         clearAddressesList();
         var initialAddressCount = parseInt(DOM.rowsToAdd.val());
         displayAddresses(0, initialAddressCount);
-		/* ERG console.log('After displayAddresses-1');*/
+		/* ALC console.log('After displayAddresses-1');*/
 
         if (isELA()) {
             displayBip32InfoForELA();
@@ -1730,6 +1787,7 @@
     }
 
     function TableRow(index, isLast) {
+		/*ALC*/console.log('TableRow' + index + ' ' + isLast);
 
         var self = this;
         this.shouldGenerate = true;
@@ -1772,6 +1830,7 @@
                 }
                 // get address
                 var address = keyPair.getAddress().toString();
+				/*ALC*/console.log('address ' + index + ' ' + address);
                 // get privkey
                 var hasPrivkey = !key.isNeutered();
                 var privkey = "NA";
@@ -2084,7 +2143,7 @@
             }
         }
         displayAddresses(start, rowsToAdd);
-		/* ERG console.log('After displayAddresses-2');*/
+		/* ALC console.log('After displayAddresses-2');*/
     }
 
     function clearDisplay() {
@@ -2123,7 +2182,7 @@
     }
 
     function addAddressToList(indexText, address, pubkey, privkey) {
-		/* ERG console.log('addAddressToList ', indexText, address);*/
+		/* ALC console.log('addAddressToList ', indexText, address);*/
         var row = $(addressRowTemplate.html());
         // Elements
         var indexCell = row.find(".index span");
@@ -2398,12 +2457,12 @@
         var entropy = null;
         if (entropyTypeAutoDetect) {
             entropy = Entropy.fromString(entropyStr);
-			/* ERG console.log('entropy1',entropy);*/
+			/* ALC console.log('entropy1',entropy);*/
         }
         else {
             let base = DOM.entropyTypeInputs.filter(":checked").val();
             entropy = Entropy.fromString(entropyStr, base);
-			/* ERG console.log('entropy2',entropy);*/
+			/* ALC console.log('entropy2',entropy);*/
         }
         if (entropy.binaryStr.length == 0) {
             return;
@@ -2413,7 +2472,7 @@
         // Use entropy hash if not using raw entropy
         var bits = entropy.binaryStr;
         var mnemonicLength = DOM.entropyMnemonicLength.val();
-		/* ERG console.log('mnemonicLength',mnemonicLength);*/
+		/* ALC console.log('mnemonicLength',mnemonicLength);*/
         if (mnemonicLength != "raw") {
             // Get bits by hashing entropy with SHA256
             var hash = sjcl.hash.sha256.hash(entropy.cleanStr);
@@ -2452,7 +2511,7 @@
         // Convert entropy array to mnemonic
         /* MBW 230626 var phraseM = mnemonic.toMnemonic(entropyArr);  see if can get phraseM into DOM */
 		var phrase = mnemonic.toMnemonic(entropyArr);
-		/* ERG console.log('phrase',phrase);*/
+		/* ALC console.log('phrase',phrase);*/
         // Set the mnemonic in the UI
 		console.log ('phraseM', phraseM); //MBW230626 
 		DOM.phraseM.val(phraseM);
@@ -2500,7 +2559,7 @@
         var bitsPerEvent = entropy.bitsPerEvent.toFixed(2);
         var spacedBinaryStr = addSpacesEveryElevenBits(entropy.binaryStr);
         DOM.entropyFiltered.html(entropy.cleanHtml);
-		/* ERG console.log('INDEX Setting xmrpublic now to HELLO');*/
+		/* ALC console.log('INDEX Setting xmrpublic now to HELLO');*/
 		DOM.xmrpublic.html(myxmrpublickey);/* THIS IS THE ONE THAT WORKS !!! */
 		DOM.xmrprivate.html(myxmrprivatekey);
 		DOM.xmrprivateview.html(myxmrprivateview);
@@ -2685,6 +2744,10 @@
 
     function bip141TabSelected() {
         return DOM.bip141tab.hasClass("active");
+    }
+
+    function bipMoneroTabSelected() {
+        return DOM.bipmonerotab.hasClass("active");
     }
 
     function setHdCoin(coinValue) {
@@ -4385,7 +4448,7 @@
         clearAddressesList();
         var initialAddressCount = parseInt(DOM.rowsToAdd.val());
         displayAddresses(0, initialAddressCount);
-		/* ERG console.log('After displayAddresses-3');*/
+		/* ALC console.log('After displayAddresses-3');*/
     }
 
     function calcAddressForELA(seed, coin, account, change, index) {
