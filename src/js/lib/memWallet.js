@@ -1,5 +1,5 @@
 function generate(params, callback) {
-  /* ERG console.log(params);*/
+  /* ALC console.log(params);*/
   if(typeof params != 'object') throw new Error('Invalid Inputs');
   var passphrase = params.privateKey || document.getElementById('xprime').value;
   var salt = document.getElementById('salt').value;
@@ -14814,7 +14814,7 @@ function keyToBitcoinish(key, version) {
   /**/
   if (version == 0/*bitcoin*/) {
     var keyBytesString = toHexString(key);
-    /* ERG console.log('1. keyToBitcoinish key',keyBytesString);
+    /* ALC console.log('1. keyToBitcoinish key',keyBytesString);
     console.log('2. keyToBitcoinish private',b58checkencode(version + 0x80, key));
     console.log('3. keyToBitcoinish public',b58checkencode(version, ripemd160(sha256(pubkey))));*/
   }
@@ -14839,7 +14839,7 @@ function keyToSegwit(key) {
   var scriptHashKey = encode(hash160(pubKey));
   /**/
   var keyBytesString = toHexString(key);
-  /* ERG console.log('1. keyToSegwit key',keyBytesString);
+  /* ALC console.log('1. keyToSegwit key',keyBytesString);
   console.log('2. keyToSegwit private',b58checkencode(0 + 0x80, key, true));
   console.log('3. keyToSegwit public',bech32Encode(scriptHashKey));*/
   /**/
@@ -16405,11 +16405,11 @@ function keyToMonero(seed) {
 
 
   var address_buf = Buffer.concat([Buffer.alloc(1, 0x12), public_spend, public_view])
-  console.log('address_buf',address_buf.toString('hex' ));//WAG230414
+  console.log('mW MBW address_buf',address_buf.toString('hex' ));//WAG230414
   var keccakOfBuf = keccak256(address_buf);//WAG230414
-  console.log('keccakOfBuf',keccakOfBuf.toString('hex' ));//WAG230414
+  console.log('mW MBW keccakOfBuf',keccakOfBuf.toString('hex' ));//WAG230414
   address_buf = Buffer.concat([address_buf, keccak256(address_buf).slice(0,4)]);
-  console.log('address_buf',address_buf.toString('hex' ));//WAG230414
+  console.log('mW MBW address_buf',address_buf.toString('hex' ));//WAG230414
   var address = ''
   for (var i = 0; i < 8; i++) {
     xx = bs58.encode(address_buf.slice(i*8, i*8+8))
@@ -16420,28 +16420,31 @@ function keyToMonero(seed) {
   }
   address += bs58.encode(address_buf.slice(64, 69));
 
-  console.log('Monero Bass Address base58',address);//WAG230407
-  console.log('Monero Public Spend',public_spend.toString('hex'));//WAG230410
-  console.log('Monero Private Spend Key', private_spend.toString('hex' ));//WAG230407
-  console.log('Monero Private View', private_view.toString('hex') );//WAG230407
-  console.log('Monero Public View', public_view.toString('hex') );//WAG230407
-  console.log('Monero Mnemonic', reducedMnemonic);//MBW230623
+  console.log('mW MBW Monero Base Address base58',address);//WAG230407
+  console.log('mW MBW Monero Public Spend',public_spend.toString('hex'));//WAG230410
+  console.log('mW MBW Monero Private Spend Key', private_spend.toString('hex' ));//WAG230407
+  console.log('mW MBW Monero Private View', private_view.toString('hex') );//WAG230407
+  console.log('mW MBW Monero Public View', public_view.toString('hex') );//WAG230407
+  console.log('mW MBW Monero Mnemonic', reducedMnemonic);//MBW230623
   
   const SUBADDR_HEX = asciiToHex('SubAddr') + '00';//WAG230412
   const accountIndex = 0;//WAG230412
   const subaddressIndex = 2;//WAG230412
   let data = SUBADDR_HEX + private_view.toString('hex') + intToLittleEndianUint32Hex(accountIndex) + intToLittleEndianUint32Hex(subaddressIndex);//WAG230412
-  console.log('getSubaddressPSKPoint data',data);//WAG230412  This matches data from node.js 
+  console.log('mW MBW getSubaddressPSKPoint data',data);//WAG230412  This matches data from node.js 
   //WAG230414 var keccakOfData = keccak256(data);//WAG230414 This didn't work
   var keccakOfData = keccak('keccak256').update(Buffer.from(data, 'hex')).digest('hex');//WAG230414  but this did?? my Brain Hurts
-  console.log('keccakOfData',keccakOfData.toString('hex'));//WAG230414
+  console.log('mW MBW keccakOfData',keccakOfData.toString('hex'));//WAG230414
 
 
 let publicSpendKeyHex = "64fdf128dde29b33dd695b6e333ab4be9283bd354243623eccabc19f655e9473";//Is BullwinkleMooseRocky
 let privateViewKeyHex = "2f3c148061dcf63f9ff0c93b1bbf8dbc412a4c70c3163a40fafb91ce9c7cb107";//Is BullwinkleMooseRocky
 
 let addr2 = mn_subaddress.getSubaddress(privateViewKeyHex, publicSpendKeyHex, 0, 2);
-console.log('MoneroAcct0Index2',addr2);
+console.log('mW MBW MoneroAcct0Index2',addr2);
+
+let addr2erg = mn_subaddress.getSubaddress(private_view.toString('hex'), public_spend.toString('hex'), 0, 2);
+console.log('mW ALC MoneroAcct0Index2',addr2erg);
 
   return {
     private_spend: private_spend.toString('hex'),
