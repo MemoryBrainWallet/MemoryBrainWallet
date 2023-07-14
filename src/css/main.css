@@ -18,13 +18,13 @@
 body {
   height: 100%;
   font-family: lato;
-  color: #000; /* 2023-03-31 ERG was #eee*/
+  color: #000; /* 2023-03-31 ALC was #eee*/
 }
 body.tos-show {
   overflow:hidden;
 }
 
-a { color: black } /* 2023-03-31 ERG was yellow */
+a { color: black } /* 2023-03-31 ALC was yellow */
 
 .tos-container { display:none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: rgba(0,0,0,0.8); z-index: 10; } /* tos black background */
   .tos-container h4 { margin-bottom: 0; text-align: center; }
