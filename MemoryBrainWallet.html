@@ -11,7 +11,7 @@
         <title>BIP39 - Mnemonic Code</title>
         <link rel="stylesheet" href="css/bootstrap.css">
 		<link rel="stylesheet" href="css/app.css">
-		<link rel="stylesheet" href="src/css/main.css" type="text/css"><!-- 2023-03-31 ERG -->
+		<link rel="stylesheet" href="src/css/main.css" type="text/css"><!-- 2023-03-31 ALC -->
         <meta content="Mnemonic code for generating deterministic keys" name="description"/>
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <meta content="bitcoin mnemonic converter" name="description" />
@@ -511,6 +511,9 @@
                         <li id="bip141-tab">
                             <a href="#bip141" role="tab" data-toggle="tab">BIP141</a>
                         </li>
+                        <li id="bipmonero-tab">
+                            <a href="#bipmonero" role="tab" data-toggle="tab">Monero</a>
+                        </li>
                     </ul>
                     <div class="derivation-type tab-content">
                         <div id="bip44" class="tab-pane active">
@@ -877,6 +880,86 @@
                                 </div>
                             </form>
                         </div>
+                        <div id="bipmonero" class="tab-pane">
+                            <form class="form-horizontal" role="form">
+                                <br>
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-10">
+                                    <p>
+                                        * XMR * For more info see the
+                                        <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki" target="_blank">BIP44 spec</a>.
+                                    </p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="purpose-bipmonero" class="col-sm-2 control-label">
+                                        <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#purpose" target="_blank">Purpose</a>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input id="purpose-bipmonero" type="text" class="purpose form-control" value="44" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="coin-bipmonero" class="col-sm-2 control-label">
+                                        <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#registered-coin-types" target="_blank">Coin</a>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input id="coin-bipmonero" type="text" class="coin form-control" value="128" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="account-bipmonero" class="col-sm-2 control-label">
+                                        <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#account" target="_blank">Account</a>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input id="account-bipmonero" type="text" class="account form-control" value="0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="change-bipmonero" class="col-sm-2 control-label">
+                                        <a href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#change" target="_blank">External / Internal</a>
+                                    </label>
+                                    <div class="col-sm-10">
+                                      <input id="change-bipmonero" type="text" class="change form-control" value="0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <p>The account extended keys can be used for importing to most BIP44 compatible wallets, such as mycelium or electrum.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="account-xprv" class="col-sm-2 control-label">
+                                        <span>Account Extended Private Key</span>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <textarea id="account-xprv-bipmonero" type="text" class="account-xprv private-data form-control" readonly data-show-qr autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="account-xpub" class="col-sm-2 control-label">
+                                        <span>Account Extended Public Key</span>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <textarea id="account-xpub-bipmonero" type="text" class="account-xpub form-control" readonly data-show-qr autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <p>The BIP32 derivation path and extended keys are the basis for the derived addresses.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="bipmonero-path" class="col-sm-2 control-label">BIP32 Derivation Path</label>
+                                    <div class="col-sm-10">
+                                        <input id="bipmonero-path" type="text" class="path form-control" value="m/44'/128'/0'/0" readonly="readonly">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
@@ -1229,7 +1312,7 @@
   <script src="src/js/lib/secrets.js"></script>
   <script src="src/js/lib/ecdsa.js"></script>
   <script src="src/js/lib/solanaweb3.js"></script>
-  <!-- script src="src/js/main.js"></script 2023-05-09 ERG removed -->
+  <!-- script src="src/js/main.js"></script 2023-05-09 ALC removed -->
         <script src="js/jquery-3.2.1.js"></script>
         <script src="js/bootstrap.js"></script>
         <!-- <script src="js/bip39-libs.js"></script> WAG230304 removed -->
