@@ -1,10 +1,11 @@
 (function(global) {
   "use strict";
 
-  let myxmrpublickey = "xyz";
-  let myxmrprivatekey = "sdf";
-  let myxmrprivateview = "ghj";
-  let myxmrpublicview = "kgf";
+  let alc_xmrpublickey = "xyz";
+  let alc_xmrprivatekey = "sdf";
+  let alc_xmrprivateview = "ghj";
+  let alc_xmrpublicview = "kgf";
+  let alc_xmrpublicspend = "gof";
   let phraseM = "bob";//MBW230626
   
   let GLOBAL_SHARE_COUNTER = 0;
@@ -283,10 +284,11 @@
           /*setResult(`#${alt}pub`, result.public);*/
           /*setResult('#xmrpublic', result.public);*/
 		  xmrpublickey = result.public;
-		  myxmrpublickey = result.public;
-		  myxmrprivatekey = result.private_spend;
-		  myxmrprivateview = result.private_view;
-		  myxmrpublicview = result.public_view;
+		  alc_xmrpublickey = result.public;
+		  alc_xmrprivatekey = result.private_spend;
+		  alc_xmrprivateview = result.private_view;
+		  alc_xmrpublicview = result.public_view;
+		  alc_xmrpublicspend = result.public_spend;
 		  /* ALC console.log('MAIN inside');
 		  console.log(xmrpublickey);*/
 		  /*setResult(`xmrpublic`, xmrpublickey); I DO NOT EXPECT THIS TO WORK */
@@ -1787,7 +1789,7 @@
     }
 
     function TableRow(index, isLast) {
-		/*ALC*/console.log('TableRow' + index + ' ' + isLast);
+		/*ALC console.log('TableRow' + index + ' ' + isLast);*/
 
         var self = this;
         this.shouldGenerate = true;
@@ -1830,12 +1832,13 @@
                 }
                 // get address
                 var address = keyPair.getAddress().toString();
-				/*ALC*/console.log('address ' + index + ' ' + address);
+				/*ALC console.log(networks[DOM.network.val()].name + ' address ' + index + ' ' + address);*/
                 // get privkey
                 var hasPrivkey = !key.isNeutered();
                 var privkey = "NA";
                 if (hasPrivkey) {
                     privkey = keyPair.toWIF();
+				    /*ALC console.log('privkey ' + privkey);*/
                     // BIP38 encode private key if required
                     if (useBip38) {
                         if(isGRS())
@@ -1850,6 +1853,7 @@
                 }
                 // get pubkey
                 var pubkey = keyPair.getPublicKeyBuffer().toString('hex');
+				/*ALC console.log('pubkey ' + pubkey);*/
                 var indexText = getDerivationPath() + "/" + index;
                 if (useHardenedAddresses) {
                     indexText = indexText + "'";
@@ -1867,6 +1871,11 @@
                         privkey = libs.ethUtil.bufferToHex(keyPair.d.toBuffer(32));
                     }
                 }
+				//Monero is different
+                if (networks[DOM.network.val()].name == "XMR - Monero") {
+					privkey = "NA";
+					pubkey = mn_subaddress.getSubaddress(alc_xmrprivateview, alc_xmrpublicspend, 0, index);/*ALC 2023-07-20*/
+				}
                 //TRX is different
                 if (networks[DOM.network.val()].name == "TRX - Tron") {
                     keyPair = new libs.bitcoin.ECPair(keyPair.d, null, { network: network, compressed: false });
@@ -2264,6 +2273,7 @@
     function populateNetworkSelect() {
         for (var i=0; i<networks.length; i++) {
             var network = networks[i];
+			console.log(i + ' ' + network);
             var option = $("<option>");
             option.attr("value", i);
             option.text(network.name);
@@ -2560,10 +2570,10 @@
         var spacedBinaryStr = addSpacesEveryElevenBits(entropy.binaryStr);
         DOM.entropyFiltered.html(entropy.cleanHtml);
 		/* ALC console.log('INDEX Setting xmrpublic now to HELLO');*/
-		DOM.xmrpublic.html(myxmrpublickey);/* THIS IS THE ONE THAT WORKS !!! */
-		DOM.xmrprivate.html(myxmrprivatekey);
-		DOM.xmrprivateview.html(myxmrprivateview);
-		DOM.xmrpublicview.html(myxmrpublicview);
+		DOM.xmrpublic.html(alc_xmrpublickey);/* THIS IS THE ONE THAT WORKS !!! */
+		DOM.xmrprivate.html(alc_xmrprivatekey);
+		DOM.xmrprivateview.html(alc_xmrprivateview);
+		DOM.xmrpublicview.html(alc_xmrpublicview);
         DOM.entropyType.text(entropyTypeStr);
         DOM.entropyCrackTime.text(timeToCrack);
         DOM.entropyEventCount.text(entropy.base.events.length);
@@ -4254,6 +4264,13 @@
             onSelect: function() {
                 network = libs.stellarUtil.dummyNetwork;
                 setHdCoin(148);
+            },
+        },
+        {
+            name: "XMR - Monero",
+            onSelect: function() {
+                network = libs.bitcoin.networks.monero;
+                setHdCoin(128);
             },
         },
         {

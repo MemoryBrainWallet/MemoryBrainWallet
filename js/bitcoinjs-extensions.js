@@ -1910,3 +1910,17 @@ libs.bitcoin.networks.particl = {
   scriptHash: 0x3c,
   wif: 0x6c,
 };
+
+libs.bitcoin.networks.monero = {
+  messagePrefix: '\x18Monero Signed Message:\n',
+  bip32: {
+    public: 0x0488b21e,
+    private: 0x0488ade4
+  },
+  // TODO defaulting to Bitcoin value, check this
+  pubKeyHash: 0x00,
+  // TODO defaulting to Bitcoin value, check this
+  scriptHash: 0x05,
+  // TODO defaulting to Bitcoin value, check this
+  wif: 0x80
+};
