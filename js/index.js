@@ -675,6 +675,7 @@
     DOM.qrImage = DOM.qrContainer.find(".qr-image");
     DOM.qrHint = DOM.qrContainer.find(".qr-hint");
     DOM.showQrEls = $("[data-show-qr]");
+	DOM.alcAddresses = [];
 
     function init() {
         // Events
@@ -782,7 +783,7 @@
         if (isUsingOwnEntropy()) {
             DOM.entropyContainer.removeClass("hidden");
             DOM.generateContainer.addClass("hidden");
-            DOM.phrase.prop("readonly", true);
+            /*DOM.phrase.prop("readonly", true);*/
             DOM.entropy.focus();
             entropyChanged();
         }
@@ -1123,7 +1124,7 @@
         showSegwitAvailable();
         // Get the derivation path
         var derivationPath = getDerivationPath();
-		/* ALC console.log('derivationPath', derivationPath); */
+		/* ALC console.log('derivationPath', derivationPath);*/
         var errorText = findDerivationPathErrors(derivationPath);
         if (errorText) {
             showValidationError(errorText);
@@ -1142,6 +1143,7 @@
         else if (bipMoneroTabSelected()) {
             displayBipMoneroInfo();
         }
+		/* ALC console.log('calcForDerivationPath calling displayBip32Info');*/
         displayBip32Info();
     }
 
@@ -1737,14 +1739,46 @@
         clearAddressesList();
         var initialAddressCount = parseInt(DOM.rowsToAdd.val());
         displayAddresses(0, initialAddressCount);
-		/* ALC console.log('After displayAddresses-1');*/
+		/* ALC console.log('After displayAddresses-1 initialAddressCount' + initialAddressCount);*/
 
         if (isELA()) {
             displayBip32InfoForELA();
         }
     }
 
-    function displayAddresses(start, total) {
+    async function displayAddresses(start, total) {
+		if (networks[DOM.network.val()].name == "XMR - Monero") {
+            var daTableThead = document.getElementById('da-table-thead');
+
+            const daThead = document.createElement("thead");
+			daThead.id = "da-table-thead";
+
+            const daTh1 = document.createElement("th");
+			const daDiv1 = document.createElement("div");
+			daDiv1.class = "input-group";
+            const daSpan1 = document.createElement("span");
+            const daSpanText1 = document.createTextNode('Path');
+            daSpan1.appendChild(daSpanText1);
+            daDiv1.appendChild(daSpan1);
+			//
+			daTh1.appendChild(daDiv1);
+			daThead.appendChild(daTh1);
+
+            const daTh2 = document.createElement("th");
+			const daDiv2 = document.createElement("div");
+			daDiv2.class = "input-group";
+            const daSpan2 = document.createElement("span");
+            const daSpanText2 = document.createTextNode('Subaddress');
+            daSpan2.appendChild(daSpanText2);
+            daDiv2.appendChild(daSpan2);
+			//
+			daTh2.appendChild(daDiv2);
+			daThead.appendChild(daTh2);
+
+            // replace <thead>
+            daTableThead.parentNode.replaceChild(daThead, daTableThead);
+		}
+
         generationProcesses.push(new (function() {
 
             var rows = [];
@@ -1763,7 +1797,6 @@
             }
 
         })());
-		//console.log('DOM.addresses', DOM.addresses);
     }
 
     function segwitSelected() {
@@ -2191,7 +2224,7 @@
     }
 
     function addAddressToList(indexText, address, pubkey, privkey) {
-		/* ALC console.log('addAddressToList ', indexText, address);*/
+		/* ALC console.log('addAddressToList ', indexText, address, pubkey);*/
         var row = $(addressRowTemplate.html());
         // Elements
         var indexCell = row.find(".index span");
@@ -2203,6 +2236,11 @@
         addressCell.text(address);
         pubkeyCell.text(pubkey);
         privkeyCell.text(privkey);
+		if (networks[DOM.network.val()].name == "XMR - Monero") {
+			addressCell.text(pubkey);
+			pubkeyCell.text('');
+			privkeyCell.text('');
+		}
         // Visibility
         if (!showIndex) {
             indexCell.addClass("invisible");
@@ -2273,7 +2311,7 @@
     function populateNetworkSelect() {
         for (var i=0; i<networks.length; i++) {
             var network = networks[i];
-			console.log(i + ' ' + network);
+			/* ALC console.log(i + ' ' + network);*/
             var option = $("<option>");
             option.attr("value", i);
             option.text(network.name);
