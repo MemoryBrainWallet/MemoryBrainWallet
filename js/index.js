@@ -6,6 +6,7 @@
   let alc_xmrprivateview = "ghj";
   let alc_xmrpublicview = "kgf";
   let alc_xmrpublicspend = "gof";
+  let alc_shownXMR = false;
   let phraseM = "bob";//MBW230626
   
   let GLOBAL_SHARE_COUNTER = 0;
@@ -1747,6 +1748,107 @@
     }
 
     async function displayAddresses(start, total) {
+		if (networks[DOM.network.val()].name == "BTC - Bitcoin" && alc_shownXMR) {
+            var daTableThead = document.getElementById('da-table-thead');
+
+            const daThead = document.createElement("thead");
+			daThead.id = "da-table-thead";
+
+            const daTh1 = document.createElement("th");
+			const daDiv1 = document.createElement("div");
+			daDiv1.classList.add('input-group');
+            const daSpan1 = document.createElement("span");
+            const daSpanText1 = document.createTextNode('Path');
+            daSpan1.appendChild(daSpanText1);
+            daDiv1.appendChild(daSpan1);
+			//
+			const daNbsp1 = document.createTextNode('\u00a0\u00a0');
+			daDiv1.appendChild(daNbsp1);
+			//
+			const daButton1 = document.createElement("button");
+            const daButtonText1 = document.createTextNode('Toggle');
+            daButton1.appendChild(daButtonText1);
+			daButton1.classList.add('index-toggle');
+			daDiv1.appendChild(daButton1);
+			//
+			daTh1.appendChild(daDiv1);
+			daThead.appendChild(daTh1);
+
+            const daTh2 = document.createElement("th");
+			const daDiv2 = document.createElement("div");
+			daDiv2.class = "input-group";
+            const daSpan2 = document.createElement("span");
+            const daSpanText2 = document.createTextNode('Address');
+            daSpan2.appendChild(daSpanText2);
+            daDiv2.appendChild(daSpan2);
+			//
+			const daNbsp2 = document.createTextNode('\u00a0\u00a0');
+			daDiv2.appendChild(daNbsp2);
+			//
+			const daButton2 = document.createElement("button");
+            const daButtonText2 = document.createTextNode('Toggle');
+            daButton2.appendChild(daButtonText2);
+			daButton2.classList.add('address-toggle');
+			daDiv2.appendChild(daButton2);
+			//
+			daTh2.appendChild(daDiv2);
+			daThead.appendChild(daTh2);
+
+            const daTh3 = document.createElement("th");
+			const daDiv3 = document.createElement("div");
+			daDiv3.class = "input-group";
+            const daSpan3 = document.createElement("span");
+            const daSpanText3 = document.createTextNode('Public Key');
+            daSpan3.appendChild(daSpanText3);
+            daDiv3.appendChild(daSpan3);
+			//
+			const daNbsp3 = document.createTextNode('\u00a0\u00a0');
+			daDiv3.appendChild(daNbsp3);
+			//
+			const daButton3 = document.createElement("button");
+            const daButtonText3 = document.createTextNode('Toggle');
+            daButton3.appendChild(daButtonText3);
+			daButton3.classList.add('public-key-toggle');
+			daDiv3.appendChild(daButton3);
+			//
+			daTh3.appendChild(daDiv3);
+			daThead.appendChild(daTh3);
+
+            const daTh4 = document.createElement("th");
+			const daDiv4 = document.createElement("div");
+			daDiv4.class = "input-group";
+            const daSpan4 = document.createElement("span");
+            const daSpanText4 = document.createTextNode('Private Key');
+            daSpan4.appendChild(daSpanText4);
+            daDiv4.appendChild(daSpan4);
+			//
+			const daNbsp4 = document.createTextNode('\u00a0\u00a0');
+			daDiv4.appendChild(daNbsp4);
+			//
+			const daButton4 = document.createElement("button");
+            const daButtonText4 = document.createTextNode('Toggle');
+            daButton4.appendChild(daButtonText4);
+			daButton4.classList.add('private-key-toggle');
+			daDiv4.appendChild(daButton4);
+			//
+			daTh4.appendChild(daDiv4);
+			daThead.appendChild(daTh4);
+
+            // replace <thead>
+            daTableThead.parentNode.replaceChild(daThead, daTableThead);
+
+            DOM.indexToggle = $(".index-toggle");
+            DOM.indexToggle.on("click", toggleIndexes);
+            DOM.addressToggle = $(".address-toggle");
+            DOM.addressToggle.on("click", toggleAddresses);
+            DOM.publicKeyToggle = $(".public-key-toggle");
+            DOM.publicKeyToggle.on("click", togglePublicKeys);
+            DOM.privateKeyToggle = $(".private-key-toggle");
+            DOM.privateKeyToggle.on("click", togglePrivateKeys);
+			
+			alc_shownXMR = false;
+		}
+		else
 		if (networks[DOM.network.val()].name == "XMR - Monero") {
             var daTableThead = document.getElementById('da-table-thead');
 
@@ -1777,6 +1879,8 @@
 
             // replace <thead>
             daTableThead.parentNode.replaceChild(daThead, daTableThead);
+			
+			alc_shownXMR = true;
 		}
 
         generationProcesses.push(new (function() {
