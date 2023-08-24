@@ -1,5 +1,10 @@
+var incoming_entropy = "no_entropy";
+
 function generate(params, callback) {
-  /* ALC console.log(params);*/
+  /* ALC console.log('ALC mW generate params ',params);*/
+  if (params.entropy.length > 0) {
+	incoming_entropy = params.entropy;//Use incoming entropy, derived from mnemonic
+  }
   if(typeof params != 'object') throw new Error('Invalid Inputs');
   var passphrase = params.privateKey || document.getElementById('xprime').value;
   var salt = document.getElementById('salt').value;
@@ -14810,15 +14815,20 @@ function compile(chunks) {
 }
 
 function keyToBitcoinish(key, version) {
-  var pubkey = Buffer.from(s256.keyFromPrivate(key).getPublic(false, 'hex'), 'hex');
-  /**/
-  if (version == 0/*bitcoin*/) {
-    var keyBytesString = toHexString(key);
-    /* ALC console.log('1. keyToBitcoinish key',keyBytesString);
-    console.log('2. keyToBitcoinish private',b58checkencode(version + 0x80, key));
-    console.log('3. keyToBitcoinish public',b58checkencode(version, ripemd160(sha256(pubkey))));*/
+  var chunk = null;
+  if (incoming_entropy != "no_entropy") {
+	chunk = Buffer.from(incoming_entropy, 'hex');
+	key = chunk;
   }
-  /**/
+  var pubkey = Buffer.from(s256.keyFromPrivate(key).getPublic(false, 'hex'), 'hex');
+  /*
+  if (version == 0) {
+    var keyBytesString = toHexString(key);
+    console.log('1. keyToBitcoinish key',keyBytesString);
+    console.log('2. keyToBitcoinish private',b58checkencode(version + 0x80, key));
+    console.log('3. keyToBitcoinish public',b58checkencode(version, ripemd160(sha256(pubkey))));
+  }
+  */
   return {
     private: b58checkencode(version + 0x80, key),
     public: b58checkencode(version, ripemd160(sha256(pubkey))),
