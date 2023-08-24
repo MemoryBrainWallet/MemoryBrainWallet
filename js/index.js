@@ -1,11 +1,11 @@
 (function(global) {
   "use strict";
 
-  let alc_xmrpublickey = "xyz";
-  let alc_xmrprivatekey = "sdf";
-  let alc_xmrprivateview = "ghj";
-  let alc_xmrpublicview = "kgf";
-  let alc_xmrpublicspend = "gof";
+  let alc_xmrpublickey = "xyz0";
+  let alc_xmrprivatekey = "xyz1";
+  let alc_xmrprivateview = "xyz2";
+  let alc_xmrpublicview = "xyz3";
+  let alc_xmrpublicspend = "xyz4";
   let alc_shownXMR = false;
   let phraseM = "bob";//MBW230626
   
@@ -141,7 +141,7 @@
     event.stopPropagation();
     $('.tos-container').hide();
     $('body').removeClass('tos-show');
-    generateCoins();
+    generateCoins(''/* No entropy */);
   });
 
   function setMnemonicFromEntropy(entropyStr) {
@@ -224,14 +224,15 @@
 
   function foo() { return "foo"; }
 
-  function generateCoins() {
+  function generateCoins(entropy) {
     let power = $('input[name="power-level"]:checked').val();;
     setResult('.date', 'Created ' + createdDate);
     const params = {
       power: power,
       currency: 'bitcoin',
       privateKey: null,
-      altCoin: false
+      altCoin: false,
+	  entropy: entropy
     };
 
     generate(params, result => {
@@ -254,7 +255,7 @@
       drawIdenticon(`.i-nxt`, address);
       makeQRImage(`qr-nxtacct`, address);
       makeQRImage(`qr-nxtpri`, passphrase);
-      x = generateAltCoins(result.private, power);
+      x = generateAltCoins(result.private, power, params.entropy);
 	  /* ALC console.log('MAIN Returned xmrpublickey');
 	  console.log(x);*/
 	  /*setResult('#xmrpublic', x); I DO NOT EXPECT THIS TO WORK */
@@ -262,13 +263,14 @@
     });
   }
 
-  function generateAltCoins(privateKey, power) {
+  function generateAltCoins(privateKey, power, entropy) {
     let xmrpublickey = 'bullwinkle';
     const params = {
       power: power,
       currency: null,
       privateKey: privateKey,
-      altCoin: true
+      altCoin: true,
+	  entropy: entropy
     };
     for (let altcoin of SUPPORTED_ALT_COINS) {
       let alt = altCoinCode(altcoin);
@@ -797,8 +799,14 @@
     }
 
     function delayedPhraseChanged() {
-
-        if(isUsingAutoCompute()) {
+	/**/
+    if (alc_xmrpublickey = "xyz0") {
+		// Here the entropy is passed in from the mnemonic being entered on webpage
+		var theEntropy = mnemonic.toRawEntropyHex(DOM.phrase.val());
+		generateCoins(theEntropy);
+	}
+	/**/
+    if(isUsingAutoCompute()) {
         hideValidationError();
         seed = null;
         bip32RootKey = null;
@@ -1570,7 +1578,7 @@
             /* ALC console.log("path: " + path); This shows the correct path: m/44'/128'/0'/0 */
             DOM.bipmoneropath.val(path); /* ALC but this jQuery call does not appear to work, don't know why */
             var derivationPath = DOM.bipmoneropath.val(); /* ALC so then this value is 'undefined' */
-            /* ALC */console.log("Using derivation path from BIPMonero tab: " + path);
+            /* ALC console.log("Using derivation path from BIPMonero tab: " + path);*/
             /* ALC return derivationPath; */
             return path; /* ALC so simply returning this correct value here */
         }
